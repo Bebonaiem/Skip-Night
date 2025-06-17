@@ -1,0 +1,34 @@
+# SkipNight Plugin Config
+# Placeholders: {player}, {percentage}, {time}
+# {current_votes}, {online_players}, {total_started}, {successful_votes}
+
+vote-settings:
+  # Enable this to automatically start a vote when night begins.
+  auto-start-vote-at-night: true
+  required-percentage: 50
+  vote-duration-seconds: 30
+  vote-start-cooldown-seconds: 300
+  night-start-tick: 12541 # The time when night is considered to have started
+  night-end-tick: 23458   # The time when night is considered to have ended
+
+messages:
+  prefix: "&6&l[Skip Night] &r"
+  vote-started:
+    - "{prefix}&eA vote to skip the night has started!"
+    - "{prefix}&eType &a/skipnight &eor sleep in a bed to vote!"
+    - "{prefix}&e{percentage}% of online players need to agree to skip the night."
+  vote-ended-failure: "{prefix}&cThe vote has ended. Not enough players voted to skip the night."
+  vote-ended-success: "{prefix}&aThe vote passed! Skipping the night..."
+  time-remaining: "{prefix}&eTime remaining: &c{time} seconds"
+  vote-progress: "{prefix}&eCurrent votes: &a{current_votes}/{online_players} &e- Need {percentage}% to skip."
+  already-voted: "{prefix}&cYou have already voted!"
+  reload-success: "{prefix}&aConfiguration reloaded successfully."
+  no-permission: "&cYou do not have permission to use this command."
+  error-not-a-player: "&cOnly players can use this command!"
+  error-vote-in-progress: "&cYou can't start a vote, one is already in progress!"
+  error-cooldown: "&cYou must wait before starting another vote!"
+  error-not-night: "&cYou can only start a vote at night!"
+  stats-header: "&6&lSkip Night Statistics:"
+  stats-total-votes: "&eTotal votes started: &a{total_started}"
+  stats-successful-votes: "&eSuccessful votes: &a{successful_votes}"
+  stats-success-rate: "&eSuccess rate: &a{success_rate}%"
