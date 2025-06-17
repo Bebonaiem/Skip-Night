@@ -1,4 +1,4 @@
-#☀️ SkipNight v1.0
+# ☀️ SkipNight v1.0
 
 SkipNight is a lightweight and highly configurable Minecraft plugin that allows players on a server to democratically vote to skip the night. When night falls, a vote can be initiated either automatically or by a player, providing a seamless way for communities to bypass the dark without requiring every single player to sleep.
 
