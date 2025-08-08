@@ -1,6 +1,6 @@
 # SkipNight Plugin Config
-# Placeholders: {player}, {percentage}, {time}
-# {current_votes}, {online_players}, {total_started}, {successful_votes}
+# Global Placeholders: {prefix}
+# Other Placeholders: {player}, {percentage}, {time}, {current_votes}, {online_players}, {total_started}, {successful_votes}, {success_rate}
 
 vote-settings:
   # Enable this to automatically start a vote when night begins.
@@ -10,25 +10,43 @@ vote-settings:
   vote-start-cooldown-seconds: 300
   night-start-tick: 12541 # The time when night is considered to have started
   night-end-tick: 23458   # The time when night is considered to have ended
+  # Add worlds here where you DON'T want the plugin to work.
+  blacklisted-worlds:
+    - "world_the_end"
+    - "world_nether"
+    - "some_event_world"
 
 messages:
   prefix: "&6&l[Skip Night] &r"
   vote-started:
-    - "{prefix}&eA vote to skip the night has started!"
-    - "{prefix}&eType &a/skipnight &eor sleep in a bed to vote!"
-    - "{prefix}&e{percentage}% of online players need to agree to skip the night."
+    - "{prefix}&eA vote to skip the night has started in your world!"
+    - "{prefix}&eClick the button or type &a/skipnight&e to vote!" # Updated message
+    # This is the new clickable message format
+  vote-started-clickable: "{prefix}&a&l[Click Here to Vote Yes]"
   vote-ended-failure: "{prefix}&cThe vote has ended. Not enough players voted to skip the night."
-  vote-ended-success: "{prefix}&aThe vote passed! Skipping the night..."
+  vote-ended-success: "{prefix}&aThe vote passed! Skipping the night in this world..."
   time-remaining: "{prefix}&eTime remaining: &c{time} seconds"
   vote-progress: "{prefix}&eCurrent votes: &a{current_votes}/{online_players} &e- Need {percentage}% to skip."
   already-voted: "{prefix}&cYou have already voted!"
+  voted-successfully: "{prefix}&aYou voted to skip the night!"
+  voted-successfully-bed: "{prefix}&aYou voted to skip the night by sleeping!"
+  vote-in-progress-on-join: "{prefix}&eA vote to skip the night is in progress in your world! Type /skipnight to vote."
   reload-success: "{prefix}&aConfiguration reloaded successfully."
   no-permission: "&cYou do not have permission to use this command."
   error-not-a-player: "&cOnly players can use this command!"
-  error-vote-in-progress: "&cYou can't start a vote, one is already in progress!"
-  error-cooldown: "&cYou must wait before starting another vote!"
-  error-not-night: "&cYou can only start a vote at night!"
-  stats-header: "&6&lSkip Night Statistics:"
+  error-vote-in-progress: "{prefix}&cYou can't start a vote, one is already in progress in this world!"
+  error-cooldown: "{prefix}&cYou must wait before starting another vote!"
+  error-not-night: "{prefix}&cYou can only start a vote at night!"
+  error-wrong-world: "{prefix}&cYou can only start/vote in an Overworld."
+  error-world-blacklisted: "{prefix}&cNight skipping is disabled in this world."
+  error-no-vote-in-progress: "{prefix}&cThere is no vote in progress in your world."
+  gui-title: "&8Skip Night Vote Status"
+  stats-header: "&6&lSkip Night Global Statistics:"
   stats-total-votes: "&eTotal votes started: &a{total_started}"
   stats-successful-votes: "&eSuccessful votes: &a{successful_votes}"
   stats-success-rate: "&eSuccess rate: &a{success_rate}%"
+
+# Do not edit this section manually! It's used to store plugin data.
+statistics:
+  total-votes-started: 0
+  successful-votes: 0
