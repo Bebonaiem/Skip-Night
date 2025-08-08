@@ -1,53 +1,43 @@
-# ☀️ SkipNight v1.0
 
-SkipNight is a lightweight and highly configurable Minecraft plugin that allows players on a server to democratically vote to skip the night. When night falls, a vote can be initiated either automatically or by a player, providing a seamless way for communities to bypass the dark without requiring every single player to sleep.
+☀️ SkipNight v1.3.1
+SkipNight is a lightweight and highly configurable Minecraft plugin that allows players on a server to democratically vote to skip the night. It provides a modern, feature-rich experience with a live GUI, clickable messages, and per-world voting, offering a seamless way for communities to bypass the dark.
 
 ## ✨ Key Features
+### ⭐ Advanced Features
+📊 **Live Vote GUI:** Use `/skipnight gui` to open an interactive menu showing a live timer and the heads of all players, indicating who has and hasn't voted.
+🖱️ **Clickable Chat Voting:** When a vote starts, a clickable message is sent in chat, allowing players to vote instantly without typing a command.
+🌍 **Per-World Voting:** Votes are handled independently for each Overworld. A vote in one world won't interfere with another, perfect for multi-world servers!
+� **Blacklisted Worlds:** Easily disable the plugin in specific worlds (e.g., creative, event arenas) via the config.
+💾 **Persistent Statistics:** Vote counts and success rates are saved in config.yml, so your server's history persists through restarts.
 
 ### ⚡ Core Functionality
-- **🌐 Multi-Version Support:** Works seamlessly on Minecraft versions from 1.16.5 to 1.21+.
-- **🗳️ Player-Driven Voting:** Allows any player with permission to start or participate in a vote to skip the night.
-- **🌅 Automatic Vote Start:** Can be configured to automatically begin a vote as soon as night begins.
-- **🛌 Multiple Ways to Vote:** Players can vote using the /skipnight command or by simply sleeping in a bed.
-- **📊 Real-time Vote Tracking:** Broadcasts vote progress to all players as more people vote.
-- **⚙️ Highly Configurable:** Adjust percentage requirements, vote duration, cooldowns, and more.
-
-### 📈 Statistics System
-- **📈 Vote Tracking:** Records the total number of votes started and how many were successful.
-- **📊 Success Rate:** Automatically calculates and displays the vote success rate.
-- **💬 In-Game Command:** Use /skipnightstats to view the current session's voting statistics.
-
-### 🎨 Customization Options
-- **💬 Custom Messages:** Almost every message sent to players is fully customizable, with color code support.
-- **⏱️ Adjustable Timings:** Control the vote duration and the cooldown period between manually started votes.
-- **🎯 Configurable Thresholds:** Define the exact percentage of players needed for a vote to pass.
-- **🌙 Definable Night Time:** Set the exact game ticks for when night is considered to have started and ended.
+🌐 **Multi-Version Support:** Works seamlessly on Minecraft versions from 1.16.5 to 1.21+.
+🌅 **Automatic Vote Start:** Can be configured to automatically begin a vote as soon as night begins.
+🛌 **Multiple Ways to Vote:** Players can vote using commands, the GUI, clickable messages, or by simply sleeping in a bed.
+⚙️ **Highly Configurable:** Adjust percentage requirements, vote duration, cooldowns, and more.
 
 ## 📥 Installation Guide
-
-1. 🔽 Download the latest SkipNight.jar from the releases page.
-2. 📂 Place the .jar file into your server's plugins/ folder.
-3. 🔄 Restart your server to generate the default configuration files.
-4. ⚙️ Edit plugins/SkipNight/config.yml to customize settings to your liking.
-5. 🔃 Reload the configuration with /skipnight reload or restart the server.
+🔽 Download the latest SkipNight.jar from the releases page.
+📂 Place the .jar file into your server's plugins/ folder.
+🔄 Restart your server to generate the default configuration files.
+⚙️ Edit `plugins/SkipNight/config.yml` to customize settings to your liking.
+🔃 Reload the configuration with `/skipnight reload` or restart the server.
 
 ## ⚙️ Configuration Details
-
 ### 🌙 Vote Settings
 ```yaml
 vote-settings:
-  # Enable this to automatically start a vote when night begins.
   auto-start-vote-at-night: true
-  # The percentage of online players required to vote yes.
   required-percentage: 50
-  # How long the vote lasts in seconds.
   vote-duration-seconds: 30
-  # Cooldown in seconds before a player can start another vote manually.
   vote-start-cooldown-seconds: 300
-  # The game tick when night is considered to have started (Default: 12541).
   night-start-tick: 12541
-  # The game tick when night is considered to have ended (Default: 23458).
   night-end-tick: 23458
+  # Add worlds here where you DON'T want the plugin to work.
+  blacklisted-worlds:
+    - "world_the_end"
+    - "world_nether"
+    - "some_event_world"
 ```
 
 ### 💬 Messages
@@ -55,68 +45,70 @@ vote-settings:
 messages:
   prefix: "&6&l[Skip Night] &r"
   vote-started:
-    - "{prefix}&eA vote to skip the night has started!"
-    - "{prefix}&eType &a/skipnight &eor sleep in a bed to vote!"
-    - "{prefix}&e{percentage}% of online players need to agree to skip the night."
-  vote-ended-failure: "{prefix}&cThe vote has ended. Not enough players voted to skip the night."
-  vote-ended-success: "{prefix}&aThe vote passed! Skipping the night..."
-  time-remaining: "{prefix}&eTime remaining: &c{time} seconds"
-  vote-progress: "{prefix}&eCurrent votes: &a{current_votes}/{online_players} &e- Need {percentage}% to skip."
-  already-voted: "{prefix}&cYou have already voted!"
+    - "{prefix}&eA vote to skip the night has started in your world!"
+    - "{prefix}&e{percentage}% of players need to agree."
+    - "{prefix}&eClick the button below or type &a/skipnight&e to vote!"
+  # The clickable message that appears in chat.
+  vote-started-clickable: "{prefix}&a&l[Click Here to Vote Yes]"
+  # The title of the /skipnight gui menu.
+  gui-title: "&8Skip Night Vote Status"
   # ... and many more!
 ```
 
-## 🔑 Permission Nodes
+### 💾 Statistics
+```yaml
+# Do not edit this section manually! It's used to store plugin data.
+statistics:
+  total-votes-started: 0
+  successful-votes: 0
+```
 
+## 🔑 Permission Nodes
 | Permission | Description | Default |
 |------------|-------------|---------|
 | skipnight.vote | Allows a player to start and participate in votes. | true |
+| skipnight.gui | Allows a player to use the /skipnight gui command. | true |
 | skipnight.stats | Allows a player to view voting statistics. | true |
 | skipnight.reload | Allows an admin to reload the plugin's config. | op |
+| skipnight.* | Grants all permissions for the plugin. | op |
 
 ## 🕹️ Usage Guide
-
 ### 👨‍💻 Player Commands
-- `/skipnight` - Starts a vote or votes 'yes' in an ongoing vote. (Alias: /sn)
-- `/skipnightstats` - Shows statistics for votes in the current server session.
+`/skipnight` - Starts a vote or votes 'yes' in an ongoing vote. (Alias: /sn, /skip)
+`/skipnight gui` - Opens the live vote status GUI for the current world.
+`/skipnightstats` - Shows global, persistent voting statistics.
 
 ### 👨‍💼 Admin Commands
-- `/skipnight reload` - Reloads the config.yml file from disk.
+`/skipnight reload` - Reloads the config.yml file from disk.
 
 ## 🛠️ Technical Specifications
-
 ### 📦 Dependencies:
-- SpigotMC API 1.16.5+
-- JetBrains Annotations (for development, provided)
-
-### ⚙️ API Support:
-- This is a standalone plugin with no required API dependencies.
+SpigotMC API 1.16.5+
 
 ### 📊 Data Storage:
-- In-memory storage for voting statistics (resets on server restart).
+Configuration File (config.yml): All statistics are now saved to disk and persist through restarts.
 
 ### 🔧 Technical Details:
-- Java 17+ required.
-- Built with Maven.
+Java 17+ required.
+Built with Maven.
 
 ## ❓ FAQ
-
-**Q: Can I disable the automatic voting at night?**  
-A: Yes! Simply set auto-start-vote-at-night: false in the config.yml.
-
 **Q: Do statistics save after the server restarts?**  
-A: No, all statistics are stored in-memory and are reset when the server stops or restarts.
+A: Yes! As of version 1.2.0, all vote statistics are saved in config.yml and will persist.
 
-**Q: What happens if a player who voted leaves the server?**  
-A: The plugin automatically removes their vote and recalculates the required percentage based on the new online player count.
+**Q: How do I disable voting in my creative world?**  
+A: Simply add the name of your creative world to the blacklisted-worlds list in config.yml and reload the plugin.
 
 **Q: Can I change what time the plugin considers to be "night"?**  
 A: Yes, you can fine-tune the night-start-tick and night-end-tick values in the configuration.
 
+**Q: What happens if a player who voted leaves or changes worlds?**  
+A: The plugin automatically updates the vote count for the world they were in, ensuring the percentage required is always accurate for the players currently present.
+
 ## 🌟 Pro Tips
-- Adjust the required-percentage based on your community size and playstyle. A lower percentage works well for smaller, cooperative servers.
-- Customize the messages and the prefix in the config to match your server's theme and colors.
-- Inform your players that sleeping in a bed also counts as a 'yes' vote during an active poll.
+Encourage players to use `/skipnight gui` for a fun, visual way to track the vote's progress.
+Customize the messages and the prefix in the config to match your server's theme and colors.
+The required-percentage can be adjusted based on your community size. A lower value works well for smaller, cooperative servers, while a higher value may be better for larger ones.
 
 ## 🤝 Support & Contributing
 Found a bug or have a feature request? Please report it on the project's GitHub Issues page. Contributions are welcome via pull requests!
@@ -125,17 +117,13 @@ Found a bug or have a feature request? Please report it on the project's GitHub 
 This project is licensed under the MIT License.
 
 ## 📌 Version Information
-- Current Version: 1.0
-- Minecraft Version: 1.16.5 - 1.21+
-- API Version: 1.16
-- Java Version: 17+
+Current Version: 1.3.1
+Minecraft Version: 1.16.5 - 1.21+
+API Version: 1.16
+Java Version: 17+
 
 ## 🏗️ Building from Source
-1. Clone the repository from GitHub.
-2. Run `mvn clean package` in the project's root directory.
-3. Find the compiled .jar file in the target/ folder.
-
-## ⚠️ Known Limitations
-- Statistics are not persistent and will reset on every server restart.
-- The automatic night-check is based on the primary overworld's time, which is standard for most server setups.
+Clone the repository from GitHub.
+Run `mvn clean package` in the project's root directory.
+Find the compiled .jar file in the target/ folder.
 
