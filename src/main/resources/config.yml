@@ -1,36 +1,98 @@
 # SkipNight Plugin Config
 # Global Placeholders: {prefix}
-# Other Placeholders: {player}, {percentage}, {time}, {current_votes}, {online_players}, {total_started}, {successful_votes}, {success_rate}
+# Other Placeholders: {player}, {percentage}, {time}, {yes_votes}, {no_votes}, {online_players}, {total_started}, {successful_votes}, {success_rate}
 
 vote-settings:
   # Enable this to automatically start a vote when night begins.
   auto-start-vote-at-night: true
+  
+  # Threshold mode: "percentage" or "absolute"
+  # percentage = require X% of players to vote yes
+  # absolute = require X specific number of players to vote yes
+  threshold-mode: "percentage"
   required-percentage: 50
+  required-absolute-count: 3
+  
+  # Allow players to vote NO (against skipping)
+  allow-vote-against: true
+  
+  # If true, skip instantly when 100% of players vote yes (no waiting for timer)
+  instant-skip-at-100-percent: true
+  
   vote-duration-seconds: 30
   vote-start-cooldown-seconds: 300
   night-start-tick: 12541 # The time when night is considered to have started
   night-end-tick: 23458   # The time when night is considered to have ended
+  
   # Add worlds here where you DON'T want the plugin to work.
   blacklisted-worlds:
     - "world_the_end"
     - "world_nether"
     - "some_event_world"
 
+# Display settings
+display:
+  # Show vote updates in action bar (less chat spam)
+  use-action-bar: true
+  # Show timer as boss bar at top of screen
+  use-boss-bar: true
+  # Still send messages to chat
+  use-chat: true
+
+# Sound effects (set to "" to disable specific sounds)
+sounds:
+  vote-started: "BLOCK_NOTE_BLOCK_PLING"  # Sound when vote starts
+  player-voted-yes: "ENTITY_EXPERIENCE_ORB_PICKUP"  # Sound when player votes yes
+  player-voted-no: "BLOCK_NOTE_BLOCK_BASS"  # Sound when player votes no
+  vote-success: "ENTITY_PLAYER_LEVELUP"  # Sound when vote passes
+  vote-failed: "ENTITY_VILLAGER_NO"  # Sound when vote fails
+  # Volume and pitch for all sounds (0.1 to 2.0)
+  volume: 1.0
+  pitch: 1.0
+
+# Reward system for voting participation
+rewards:
+  enabled: true
+  # Give rewards only if vote succeeds, or always?
+  only-on-success: false
+  
+  # XP levels to give (set to 0 to disable XP rewards)
+  xp-levels: 1
+  
+  # Items to give (use Minecraft material names)
+  items:
+    - material: "DIAMOND"
+      amount: 1
+      name: "&b&lVoting Reward"
+      lore:
+        - "&7Thanks for participating!"
+        - "&7in the night skip vote!"
+#    - material: "EMERALD"
+#      amount: 5
+  
+  # Economy reward (requires Vault + economy plugin like EssentialsX)
+  # Set to 0 to disable
+  money: 0.0
+
 messages:
   prefix: "&6&l[Skip Night] &r"
   vote-started:
     - "{prefix}&eA vote to skip the night has started in your world!"
-    - "{prefix}&eClick the button or type &a/skipnight&e to vote!" # Updated message
-    # This is the new clickable message format
-  vote-started-clickable: "{prefix}&a&l[Click Here to Vote Yes]"
+    - "{prefix}&eType &a/skipnight yes&e to vote YES or &c/skipnight no&e to vote NO!"
+  vote-started-clickable-yes: "{prefix}&a&l[✔ Vote YES]"
+  vote-started-clickable-no: "{prefix}&c&l[✖ Vote NO]"
   vote-ended-failure: "{prefix}&cThe vote has ended. Not enough players voted to skip the night."
   vote-ended-success: "{prefix}&aThe vote passed! Skipping the night in this world..."
+  vote-cancelled: "{prefix}&c&lVote cancelled by an administrator."
   time-remaining: "{prefix}&eTime remaining: &c{time} seconds"
-  vote-progress: "{prefix}&eCurrent votes: &a{current_votes}/{online_players} &e- Need {percentage}% to skip."
+  vote-progress: "{prefix}&eYES: &a{yes_votes} &7| NO: &c{no_votes} &7| Need: &b{percentage}%"
+  vote-progress-absolute: "{prefix}&eYES: &a{yes_votes}&7/&b{required} &7| NO: &c{no_votes}"
   already-voted: "{prefix}&cYou have already voted!"
-  voted-successfully: "{prefix}&aYou voted to skip the night!"
+  voted-yes: "{prefix}&aYou voted &l&aYES&r&a to skip the night!"
+  voted-no: "{prefix}&cYou voted &l&cNO&r&c against skipping the night!"
   voted-successfully-bed: "{prefix}&aYou voted to skip the night by sleeping!"
-  vote-in-progress-on-join: "{prefix}&eA vote to skip the night is in progress in your world! Type /skipnight to vote."
+  vote-in-progress-on-join: "{prefix}&eA vote to skip the night is in progress! Type /skipnight yes or no to vote."
+  reward-received: "{prefix}&aYou received a reward for voting!"
   reload-success: "{prefix}&aConfiguration reloaded successfully."
   no-permission: "&cYou do not have permission to use this command."
   error-not-a-player: "&cOnly players can use this command!"
@@ -40,7 +102,11 @@ messages:
   error-wrong-world: "{prefix}&cYou can only start/vote in an Overworld."
   error-world-blacklisted: "{prefix}&cNight skipping is disabled in this world."
   error-no-vote-in-progress: "{prefix}&cThere is no vote in progress in your world."
+  error-vote-against-disabled: "{prefix}&cVoting NO is disabled on this server."
   gui-title: "&8Skip Night Vote Status"
+  gui-voter-yes: "&a✔ Voted YES"
+  gui-voter-no: "&c✖ Voted NO"
+  gui-voter-abstain: "&7○ Has Not Voted"
   stats-header: "&6&lSkip Night Global Statistics:"
   stats-total-votes: "&eTotal votes started: &a{total_started}"
   stats-successful-votes: "&eSuccessful votes: &a{successful_votes}"

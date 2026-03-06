@@ -3,11 +3,12 @@ name: SkipNight
 # The main class that Spigot will load.
 main: me.bebo.skipNight.SkipNight
 # The version of your plugin. It's good practice to update this with new features.
-version: '1.1'
+version: '2.0'
 # The Spigot API version this plugin is built against. 1.16 provides broad compatibility.
 api-version: '1.16'
 # Your name.
 author: Bebo
+website: https://discord.gg/HHPCqX8pbg
 # A more descriptive text for your plugin page.
 description: A feature-rich plugin that allows players to vote to skip the night using a GUI, clickable messages, and more!
 
@@ -15,7 +16,7 @@ description: A feature-rich plugin that allows players to vote to skip the night
 commands:
   skipnight:
     description: Main command to vote, open the GUI, or manage the plugin.
-    usage: "/skipnight [gui|reload|stats]"
+    usage: "/skipnight [yes|no|gui|cancel|reload|stats|help]"
     aliases: [sn, skip]
   skipnightstats:
     description: Shows global voting statistics.
@@ -28,11 +29,20 @@ permissions:
     description: Grants access to all SkipNight commands.
     children:
       - skipnight.vote
+      - skipnight.vote.yes
+      - skipnight.vote.no
       - skipnight.gui
       - skipnight.stats
       - skipnight.reload
+      - skipnight.cancel
   skipnight.vote:
     description: Allows a player to vote to skip the night or start a vote.
+    default: true
+  skipnight.vote.yes:
+    description: Allows a player to vote YES to skip the night.
+    default: true
+  skipnight.vote.no:
+    description: Allows a player to vote NO against skipping the night.
     default: true
   skipnight.gui:
     description: Allows a player to open the vote status GUI.
@@ -42,4 +52,7 @@ permissions:
     default: true
   skipnight.reload:
     description: Allows a player to reload the plugin's configuration.
+    default: op
+  skipnight.cancel:
+    description: Allows a player to cancel an ongoing vote.
     default: op
